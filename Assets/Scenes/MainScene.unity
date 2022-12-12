@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.010483127, g: 0.053536877, b: 0.15393224, a: 1}
+  m_IndirectSpecularColor: {r: 0.010826946, g: 0.05316659, b: 0.15292114, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1844,7 +1844,7 @@ MonoBehaviour:
   - {fileID: 248942647}
   - {fileID: 499518185}
   ballCon: {fileID: 1741672246}
-  applePrefab: {fileID: 1971281649089808552, guid: d1e561220f2914799bff8f19ae444348, type: 3}
+  applePrefab: {fileID: 893345086340947914, guid: 9ee886bb25f384952afc21a20b3f5dfa, type: 3}
   appleTran: {fileID: 543450653080508968}
 --- !u!114 &1093852303
 MonoBehaviour:

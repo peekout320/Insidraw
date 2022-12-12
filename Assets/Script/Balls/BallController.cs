@@ -41,15 +41,14 @@ public class BallController : MonoBehaviour
     {
         this.balls = balls;
 
-        for( int i = 0; i < balls.Count; i++)
+        for (int i = 0; i < balls.Count; i++)
         {
             rigid = balls[i].GetComponent<Rigidbody>();
 
             Addrigids();
+
+            isMoving = true;
         }
-
-        isMoving = true;
-
 
         //Debug.Log(rigid.velocity.magnitude + "rigid.velocity");
     }
