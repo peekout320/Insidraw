@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 public class BallController : MonoBehaviour
 {
@@ -18,7 +20,13 @@ public class BallController : MonoBehaviour
     private float limitSpeed = 5f;
 
     [SerializeField]
-    private bool isMoving = false;
+    private AudioClip colAudio;
+    [SerializeField]
+    private float audioVolum = 0.5f;
+
+    [SerializeField]
+    private bool isMoving;
+    public bool IsMoving { get => isMoving; set => isMoving = value; }
 
 
     private void FixedUpdate()
@@ -59,6 +67,22 @@ public class BallController : MonoBehaviour
     private void Addrigids()
     {
         rigids.Add(rigid);
+    }
+
+    /// <summary>
+    /// 他オブジェクトに接触時の反応
+    /// </summary>
+    public void OnCollision()
+    {
+        for (int i = 0; i < balls.Count; i++)
+        {
+            balls[i].OnCollisionEnterAsObservable()
+                .Subscribe(col =>
+                {
+                    AudioSource.PlayClipAtPoint(colAudio, Camera.main.transform.position,audioVolum);
+                })
+                .AddTo(this);
+        }
     }
 
     /// <summary>

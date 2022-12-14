@@ -5,13 +5,13 @@ using UniRx;
 
 public class Ball : MonoBehaviour
 {
-    private float speedX = 0.2f;
+    private float speedX;
     public float SpeedX { get => speedX; set => speedX = value; }
 
-    private float speedY = 0.2f;
+    private float speedY;
     public float SpeedY { get => speedY; set => speedY = value; }
 
-    private float speedZ = 0.2f;
+    private float speedZ;
     public float SpeedZ { get => speedZ; set => speedZ = value; }
 
     //public ReactiveProperty<float> BallSpeedX = new ReactiveProperty<float>();
@@ -20,12 +20,15 @@ public class Ball : MonoBehaviour
 
     //public List<float> BallSpeeds = new List<float>();
 
-
-    public void SetupBall()
+    void Start()
     {
-        speedX = Random.Range(-0.5f, 0.5f);
-        speedY = Random.Range(-0.5f, 0.5f);
-        speedZ = Random.Range(-0.5f, 0.5f);
+        speedX = Random.Range(-3f, 3f);
+        speedY = Random.Range(-3f, 3f);
+        speedZ = Random.Range(-3f, 3f);
+
+        //BallSpeeds.Add(speedX);
+        //BallSpeeds.Add(speedY);
+        //BallSpeeds.Add(speedZ);
 
         //BallSpeedX.Value = Random.Range(-0.5f, 0.5f);
         //BallSpeedY.Value = Random.Range(-0.5f, 0.5f);

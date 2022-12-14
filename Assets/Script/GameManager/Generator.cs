@@ -20,10 +20,7 @@ public class Generator : MonoBehaviour
     private BallController ballCon;
 
     [SerializeField]
-    private GameObject applePrefab;
-
-    [SerializeField]
-    private Transform appleTran;
+    private Transform UnknownObjTran;
 
     /// <summary>
     /// ボールを３つ生成する
@@ -34,17 +31,16 @@ public class Generator : MonoBehaviour
         {
             generateBall = Instantiate(ballPrefab, ballsTran[i], false);
 
-            generateBall.SetupBall();
+            //generateBall.SetupBall();
 
             AddGenerateBalls();
         }
 
-        //ボールに初動を与えるメソッドを付与
+        //ボールに初動を与えるメソッド
         ballCon.MovingBall(generateBalls);
 
-        ////ボールをキー入力操作するメソッドを付与
-        //StartCoroutine(ballCon.OutputBallPower(generateBalls));
-
+        //接触時のの挙動を与えるメソッド
+        ballCon.OnCollision();
     }
 
     /// <summary>
@@ -55,10 +51,10 @@ public class Generator : MonoBehaviour
         generateBalls.Add(generateBall);
     }
 
-    //透明なオブジェクトを生成
+    //Unknownオブジェクトを生成
     public void GenerateUnknownObject(GameManager gameManager)
     {
-        Instantiate(DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].UnknownObj, appleTran, false);
+        Instantiate(DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].UnknownObj, UnknownObjTran, false);
     }
  } 
 

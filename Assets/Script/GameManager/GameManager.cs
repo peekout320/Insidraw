@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour
     private int questionNo;
     public int QuestionNO { get => questionNo; }
 
+    [SerializeField]
+    private AudioClip trueAudio;
+    [SerializeField]
+    private AudioClip falseAudio;
+
+
     private void Start()
     {
         //ボール生成
@@ -39,14 +45,18 @@ public class GameManager : MonoBehaviour
 
             questionNo++;
 
-            //TODO 正解のSE
+            //正解のSE
+            AudioSource.PlayClipAtPoint(trueAudio,Camera.main.transform.position);
+
             //TODO 数秒おいて次のオブジェクトに切り替える
         }
         else
         {
             Debug.Log("不正解");
 
-            //TODO 不正解SE
+            //不正解SE
+            AudioSource.PlayClipAtPoint(falseAudio, Camera.main.transform.position);
+
         }
     }
 
