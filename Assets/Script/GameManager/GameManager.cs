@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour
 
         //キー入力をスライダーに反映
         StartCoroutine(uiManager.KeyInputSlider());
+
+        //問題番号を表示
+        uiManager.DisplayQuestionNo();
     }
 
     public void JudgeString()
@@ -48,6 +51,9 @@ public class GameManager : MonoBehaviour
         if (view.InputForm.text == DataBaseManager.instance.objectDataSO.objrctDataList[questionNo].name)
         {
             Debug.Log("正解");
+
+            //答えを表示
+            uiManager.DisplayAnswer();
 
             //次の問題番号を取得
             questionNo++;
@@ -69,8 +75,11 @@ public class GameManager : MonoBehaviour
             //数秒おいて次のオブジェクトに切り替える
             DOVirtual.DelayedCall(5, () =>
             {
-                 //現在のUnkownObjectを破棄
-                 generator.DestroyUnknownObject();
+                //パーティクルを解除
+                generator.OffParticle();
+
+                //現在のUnkownObjectを破棄
+                generator.DestroyUnknownObject();
 
                  //スプラインを再設置
                  splineCon.OffSpline();
@@ -80,8 +89,13 @@ public class GameManager : MonoBehaviour
 
                  DOVirtual.DelayedCall(0.5f, () =>
                  {
+
                      //次のUnkownObjectを設置
                      generator.GenerateUnknownObject(this);
+
+                     generator.OnParticle();
+
+                     uiManager.DisplayQuestionNo();
                  });
 
              });

@@ -10,6 +10,8 @@ using DG.Tweening;
 /// </summary>
 public class UIManager : MonoBehaviour
 {
+    private GameManager gameManager;
+
     [SerializeField]
     private Slider[] sliders;
     public Slider[] Sliders { get => sliders; }
@@ -20,7 +22,15 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private BallController ballCon;
 
+    [SerializeField]
+    private Text txtAnswer;
+
+    [SerializeField]
+    private int stopTimerIndex;
+
     private float startTime = 100;
+
+    public ReactiveProperty<int> questionNoIndex = new ReactiveProperty<int>();
 
     public ReactiveProperty<float> Timer = new ReactiveProperty<float>();
 
@@ -28,10 +38,8 @@ public class UIManager : MonoBehaviour
 
     public ReactiveProperty<float> SumScore = new ReactiveProperty<float>();
 
-    public ReactiveProperty<Text> TxtAnswer = new ReactiveProperty<Text>();
+    public ReactiveProperty<string> StrAnswer = new ReactiveProperty<string>();
 
-    [SerializeField]
-    private int stopTimerIndex; 
 
     /// <summary>
     /// キー入力をスライダーに反映
@@ -86,14 +94,14 @@ public class UIManager : MonoBehaviour
             {
                 ballCon.IsMoving = true;
 
-                sliders[1].value += addPower;
+                sliders[1].value -= addPower;
             }
 
             if (Input.GetKey(KeyCode.G))
             {
                 ballCon.IsMoving = true;
 
-                sliders[1].value -= addPower;
+                sliders[1].value += addPower;
             }
 
             //Z軸に対する値の変化
@@ -131,6 +139,8 @@ public class UIManager : MonoBehaviour
     /// <returns></returns>
     public IEnumerator TimerStart(GameManager gameManager)
     {
+        this.gameManager = gameManager;
+
         Timer.Value = startTime; 
 
         //正解するまでタイマーを動かすための変数を用意
@@ -150,6 +160,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// タイマーの再開
+    /// </summary>
     public void TimerReset()
     {
         DOVirtual.DelayedCall(5, () =>
@@ -158,5 +171,28 @@ public class UIManager : MonoBehaviour
 
              stopTimerIndex++;
          });
+    }
+
+    /// <summary>
+    /// 正解時に答えを表示する。
+    /// </summary>
+    public void DisplayAnswer()
+    {
+        txtAnswer.gameObject.SetActive(true);
+
+        StrAnswer.Value = DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].name;
+
+            DOVirtual.DelayedCall(5, () =>
+            {
+                txtAnswer.gameObject.SetActive(false);
+            });
+    }
+
+    /// <summary>
+    /// 問題番号を表示する。
+    /// </summary>
+    public void DisplayQuestionNo()
+    {
+        questionNoIndex.Value = DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].Number;
     }
 }

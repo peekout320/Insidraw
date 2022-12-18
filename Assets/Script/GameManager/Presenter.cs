@@ -24,6 +24,8 @@ public class Presenter : MonoBehaviour
         ReflectTimer();
         ReflectScore();
         ReflectSumScore();
+        ReflectAnswer();
+        ReflectQuestionNo();
     }
 
     /// <summary>
@@ -35,9 +37,9 @@ public class Presenter : MonoBehaviour
         {
             int a = i;
             uiManager.Sliders[0].OnValueChangedAsObservable()
-              .Subscribe(sliderValue => ballcon.ballList[a].SpeedX = sliderValue).AddTo(this);
+              .Subscribe(sliderValue => ballcon.ballList[a].SpeedY = sliderValue).AddTo(this);
             uiManager.Sliders[1].OnValueChangedAsObservable()
-                  .Subscribe(sliderValue => ballcon.ballList[a].SpeedY = sliderValue).AddTo(this);
+                  .Subscribe(sliderValue => ballcon.ballList[a].SpeedX = sliderValue).AddTo(this);
             uiManager.Sliders[2].OnValueChangedAsObservable()
                   .Subscribe(sliderValue => ballcon.ballList[a].SpeedZ = sliderValue).AddTo(this);
         }
@@ -65,5 +67,18 @@ public class Presenter : MonoBehaviour
     private void ReflectSumScore()
     {
         uiManager.SumScore.Subscribe(x => view.ViewSumScore(x)).AddTo(this);
+    }
+
+    /// <summary>
+    /// UIManager(Model)クラスの問題の答えのstring変数をViewクラスへ反映させる
+    /// </summary>
+    private void ReflectAnswer()
+    {
+        uiManager.StrAnswer.Subscribe(x => view.ViewTextAnswer(x)).AddTo(this);
+    }
+
+    private void ReflectQuestionNo()
+    {
+        uiManager.questionNoIndex.Subscribe(x => view.ViewQuestionNo(x)).AddTo(this);
     }
 }

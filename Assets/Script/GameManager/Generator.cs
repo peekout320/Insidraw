@@ -14,6 +14,9 @@ public class Generator : MonoBehaviour
     public List<Ball> GenerateBallList { get => generateBallList; }
 
     [SerializeField]
+    private List<ParticleSystem.TrailModule> TrailList = new List<ParticleSystem.TrailModule>();
+
+    [SerializeField]
     private List<ParticleSystem> particleList = new List<ParticleSystem>();
 
     private Ball generateBall;
@@ -32,8 +35,7 @@ public class Generator : MonoBehaviour
     [SerializeField]
     private Transform UnknownObjTran;
 
-    private ParticleSystem particle;
-
+   
     //for文で共有するための数値
     private int listIndex;
 
@@ -51,11 +53,15 @@ public class Generator : MonoBehaviour
             AddGenerateBalls();
 
             //ボールの子オブジェクトのパーティクルを取得しSOデータから色を取得し配色する。ついでにリストへ登録。
-            particle = generateBall.transform.GetChild(0).GetComponent<ParticleSystem>();
-            
-            AddParticals();
+            ParticleSystem particle = generateBall.transform.GetChild(0).GetComponent<ParticleSystem>();
 
-            SetParticalColor(particleList);
+            AddParticals(particle);
+
+            ParticleSystem.TrailModule trail = particle.trails;
+
+            AddTrails(trail);
+
+            SetParticalColor(trail);
         }
 
         //ボールに初動を与えるメソッド
@@ -74,20 +80,14 @@ public class Generator : MonoBehaviour
     }
 
     /// <summary>
-    /// ボールを破棄しリストもリセットする。
-    /// </summary>
-    //public void DestroyBalls()
-    //{
-    //    for (int i = 0; i < generateBallList.Count; i++)
-    //        Destroy(generateBallList[i].gameObject);
-
-    //    generateBallList.Clear();
-    //}
-
-    /// <summary>
     /// 生成したボールの子オブジェクトのパーティクルをリスト化する
     /// </summary>
-    private void AddParticals()
+    private void AddTrails(ParticleSystem.TrailModule trail)
+    {
+        TrailList.Add(trail);
+    }
+
+    private void AddParticals(ParticleSystem particle)
     {
         particleList.Add(particle);
     }
@@ -101,7 +101,7 @@ public class Generator : MonoBehaviour
         {
             generateBallList[listIndex].transform.position = Vector3.zero;
 
-            SetParticalColor(particleList);
+            SetParticalColor(TrailList[listIndex]);
         }
     }
 
@@ -128,15 +128,36 @@ public class Generator : MonoBehaviour
     /// パーティクルを配色する。
     /// </summary>
     /// <param name="particles"></param>
-    private void SetParticalColor(List<ParticleSystem> particles)
+    private void SetParticalColor(ParticleSystem.TrailModule particle)
     {
-        var par = particles[listIndex].trails.colorOverLifetime;
+       // Debug.Log(par.color + "test1");
 
-         Debug.Log(par.color + "test1");
+        particle.colorOverLifetime = DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].color;
 
-        //par.color = DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].color;
-
-         Debug.Log(par.color + "test2");
+        // Debug.Log(par.color + "test2");
     }
-} 
+
+    /// <summary>
+    /// パーティカルを表示する。
+    /// </summary>
+    public void OnParticle()
+    {
+        for(int i =0; i< particleList.Count;i++)
+        {
+            particleList[i].gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// パーティクルを非表示する。
+    /// </summary>
+    public void OffParticle()
+    {
+        for (int i = 0; i < particleList.Count; i++)
+        {
+            particleList[i].gameObject.SetActive(false);
+        }
+    }
+
+}
 
