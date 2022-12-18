@@ -25,7 +25,7 @@ public class TitleScene : MonoBehaviour
     private CinemachineVirtualCamera vCam;
 
     [SerializeField]
-    private SliderController sliderCon;
+    private UIManager uiManager;
 
     // Start is called before the first frame update
     void Start()
@@ -39,9 +39,9 @@ public class TitleScene : MonoBehaviour
 
         generater.GenerateBall();
 
-        vCam.Follow = generater.GenerateBalls[0].transform;
-        vCam.LookAt = generater.GenerateBalls[0].transform;
+        vCam.Follow = generater.GenerateBallList[0].transform;
+        vCam.LookAt = generater.GenerateBallList[0].transform;
 
-        StartCoroutine(sliderCon.KeyInputSlider());
+        StartCoroutine(uiManager.KeyInputSlider());
     }
 }

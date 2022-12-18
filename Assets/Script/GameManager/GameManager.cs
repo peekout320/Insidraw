@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private Generator generator;
 
     [SerializeField]
-    private SliderController sliderCon;
+    private UIManager uiManager;
 
     [SerializeField]
     private View view;
@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     public int QuestionNO { get => questionNo; }
 
     [SerializeField]
+    private SplineController splineCon;
+
+    [SerializeField]
     private AudioClip trueAudio;
     [SerializeField]
     private AudioClip falseAudio;
@@ -27,14 +30,17 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //ボール生成
-        generator.GenerateBall();
-
         //問題となるオブジェクトの生成
         generator.GenerateUnknownObject(this);
 
+        //ボール生成
+        generator.GenerateBall();
+
+        //タイマー始動
+        StartCoroutine(uiManager.TimerStart(this));
+
         //キー入力をスライダーに反映
-        StartCoroutine(sliderCon.KeyInputSlider());
+        StartCoroutine(uiManager.KeyInputSlider());
     }
 
     public void JudgeString()
@@ -43,12 +49,42 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("正解");
 
+            //次の問題番号を取得
             questionNo++;
+
+            //タイマーストップ
+            uiManager.TimerReset();
+
+            //スコアを加算
+            uiManager.DisplayScore();
 
             //正解のSE
             AudioSource.PlayClipAtPoint(trueAudio,Camera.main.transform.position);
 
-            //TODO 数秒おいて次のオブジェクトに切り替える
+            //◯を描画
+            StartCoroutine(splineCon.OnSpline());
+
+            Debug.Log("test");
+
+            //数秒おいて次のオブジェクトに切り替える
+            DOVirtual.DelayedCall(5, () =>
+            {
+                 //現在のUnkownObjectを破棄
+                 generator.DestroyUnknownObject();
+
+                 //スプラインを再設置
+                 splineCon.OffSpline();
+
+                 //ボールを再設定
+                 generator.Re_SetupGenerateBalls();
+
+                 DOVirtual.DelayedCall(0.5f, () =>
+                 {
+                     //次のUnkownObjectを設置
+                     generator.GenerateUnknownObject(this);
+                 });
+
+             });
         }
         else
         {
@@ -56,7 +92,6 @@ public class GameManager : MonoBehaviour
 
             //不正解SE
             AudioSource.PlayClipAtPoint(falseAudio, Camera.main.transform.position);
-
         }
     }
 

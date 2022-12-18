@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
+using DG.Tweening;
 
-public class SliderController : MonoBehaviour
+/// <summary>
+/// UIManagerにアタッチ
+/// </summary>
+public class UIManager : MonoBehaviour
 {
     [SerializeField]
     private Slider[] sliders;
@@ -15,7 +20,23 @@ public class SliderController : MonoBehaviour
     [SerializeField]
     private BallController ballCon;
 
+    private float startTime = 100;
 
+    public ReactiveProperty<float> Timer = new ReactiveProperty<float>();
+
+    public ReactiveProperty<float> Score = new ReactiveProperty<float>();
+
+    public ReactiveProperty<float> SumScore = new ReactiveProperty<float>();
+
+    public ReactiveProperty<Text> TxtAnswer = new ReactiveProperty<Text>();
+
+    [SerializeField]
+    private int stopTimerIndex; 
+
+    /// <summary>
+    /// キー入力をスライダーに反映
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator KeyInputSlider()
     {
         yield return new WaitForSeconds(1);
@@ -65,14 +86,14 @@ public class SliderController : MonoBehaviour
             {
                 ballCon.IsMoving = true;
 
-                sliders[1].value -= addPower;
+                sliders[1].value += addPower;
             }
 
             if (Input.GetKey(KeyCode.G))
             {
                 ballCon.IsMoving = true;
 
-                sliders[1].value += addPower;
+                sliders[1].value -= addPower;
             }
 
             //Z軸に対する値の変化
@@ -91,5 +112,51 @@ public class SliderController : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    /// <summary>
+    /// 時間をスコアに代入
+    /// </summary>
+    public void DisplayScore()
+    {
+        Score.Value += Timer.Value;
+
+        SumScore.Value = Timer.Value;
+    }
+
+    /// <summary>
+    /// タイマーの開始、停止
+    /// </summary>
+    /// <param name="gameManager"></param>
+    /// <returns></returns>
+    public IEnumerator TimerStart(GameManager gameManager)
+    {
+        Timer.Value = startTime; 
+
+        //正解するまでタイマーを動かすための変数を用意
+        stopTimerIndex = gameManager.QuestionNO;
+
+        while (true)
+        {
+            if (stopTimerIndex == gameManager.QuestionNO)
+            {
+                Timer.Value -= Time.deltaTime;
+            }
+            else
+            {
+                Timer.Value = Timer.Value;
+            }
+            yield return null;
+        }
+    }
+
+    public void TimerReset()
+    {
+        DOVirtual.DelayedCall(5, () =>
+         {
+             Timer.Value = startTime;
+
+             stopTimerIndex++;
+         });
     }
 }

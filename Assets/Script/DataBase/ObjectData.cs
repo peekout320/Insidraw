@@ -5,6 +5,6 @@ public class ObjectData
 {
     public string name;
     public GameObject UnknownObj;
+    public Color color;
 
-    //TODO パーティカルの色
 }

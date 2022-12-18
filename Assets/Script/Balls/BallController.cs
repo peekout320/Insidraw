@@ -4,17 +4,20 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
+/// <summary>
+/// BallControllerにアタッチ
+/// </summary>
 public class BallController : MonoBehaviour
 {
     [SerializeField]
-    private SliderController slider;
+    private UIManager slider;
 
     private Rigidbody rigid;
 
     [SerializeField]
-    private List<Rigidbody> rigids = new List<Rigidbody>();
+    private List<Rigidbody> rigidList = new List<Rigidbody>();
 
-    public List<Ball> balls = new List<Ball>();
+    public List<Ball> ballList = new List<Ball>();
 
     [SerializeField]
     private float limitSpeed = 5f;
@@ -32,12 +35,11 @@ public class BallController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!isMoving) return;
-        for (int i = 0; i < balls.Count; i++)
+        for (int i = 0; i < ballList.Count; i++)
         {
-            rigids[i].velocity = Vector3.ClampMagnitude(rigids[i].velocity, limitSpeed);
+            rigidList[i].velocity = Vector3.ClampMagnitude(rigidList[i].velocity, limitSpeed);
 
-            rigids[i].AddForce(new Vector3(balls[i].SpeedX, balls[i].SpeedY, balls[i].SpeedZ), ForceMode.Force);
-            //rigids[i].AddForce(new Vector3(balls[i].BallSpeedX.Value, balls[i].BallSpeedY.Value, balls[i].BallSpeedZ.Value), ForceMode.Force);
+            rigidList[i].AddForce(new Vector3(ballList[i].SpeedX, ballList[i].SpeedY, ballList[i].SpeedZ), ForceMode.Force);
         }
     }
     /// <summary>
@@ -47,13 +49,13 @@ public class BallController : MonoBehaviour
     /// <returns></returns>
     public void MovingBall(List<Ball> balls)
     {
-        this.balls = balls;
+        this.ballList = balls;
 
         for (int i = 0; i < balls.Count; i++)
         {
             rigid = balls[i].GetComponent<Rigidbody>();
 
-            Addrigids();
+            AddrigidList();
 
             isMoving = true;
         }
@@ -64,9 +66,9 @@ public class BallController : MonoBehaviour
     /// <summary>
     /// ボールのRigidbody型のリストに追加
     /// </summary>
-    private void Addrigids()
+    private void AddrigidList()
     {
-        rigids.Add(rigid);
+        rigidList.Add(rigid);
     }
 
     /// <summary>
@@ -74,9 +76,9 @@ public class BallController : MonoBehaviour
     /// </summary>
     public void OnCollision()
     {
-        for (int i = 0; i < balls.Count; i++)
+        for (int i = 0; i < ballList.Count; i++)
         {
-            balls[i].OnCollisionEnterAsObservable()
+            ballList[i].OnCollisionEnterAsObservable()
                 .Subscribe(col =>
                 {
                     AudioSource.PlayClipAtPoint(colAudio, Camera.main.transform.position,audioVolum);
@@ -84,22 +86,4 @@ public class BallController : MonoBehaviour
                 .AddTo(this);
         }
     }
-
-    /// <summary>
-    /// スライダーの値をボールの動力へ反映する
-    /// </summary>
-    /// <param name="ballGene"></param>
-    //public IEnumerator OutputBallPower(List<Ball> balls)
-    //{
-    //    while (balls != null)
-    //    {
-    //        for (int i = 0; i < balls.Count; i++)
-    //        {
-    //            balls[i].SpeedX = slider.Sliders[0].value;
-    //            balls[i].SpeedY = slider.Sliders[1].value;
-    //            balls[i].SpeedZ = slider.Sliders[2].value;
-    //        }
-    //        yield return null;
-    //    }
-    //}
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
+/// <summary>
+/// prefab　⇨　Ballにアタッチ
+/// </summary>
 public class Ball : MonoBehaviour
 {
     private float speedX;
