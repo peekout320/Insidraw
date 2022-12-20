@@ -47,14 +47,14 @@ public class SplineController : MonoBehaviour
         {
             splinePos += i;
 
-            Debug.Log(splinePos);
+            //Debug.Log(splinePos);
 
             //EvaluatePosition(0~1)でスプラインの軌道と指定のオブジェクトの動きを同期させる
             splineObj.position = splineConta.EvaluatePosition(splinePos);
 
              yield return new WaitForSeconds(splineSpeed);
 
-            //splinePOsが１になったらfor文ループを抜ける
+            //splinePosが１になったらfor文ループを抜ける
             if(splinePos >= 1)
              yield break;
         }

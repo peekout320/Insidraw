@@ -14,6 +14,12 @@ public class HintObjController : MonoBehaviour
     [SerializeField]
     private Material material2;
 
+    [SerializeField]
+    private Material material3;
+
+    private float fadeSpeed = 120;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +30,10 @@ public class HintObjController : MonoBehaviour
     {
         material1.DOFade(0, 0);
         material2.DOFade(0, 0);
+        material3.DOFade(0, 0);
 
-        material1.DOFade(1, 60);
-        material2.DOFade(1, 60);
+        material1.DOFade(1, fadeSpeed);
+        material2.DOFade(1, fadeSpeed);
+        material3.DOFade(1, fadeSpeed);
     }
 }

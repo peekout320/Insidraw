@@ -26,8 +26,12 @@ public class UIManager : MonoBehaviour
     private Text txtAnswer;
 
     [SerializeField]
+    private Text txtTimeUp;
+
+    [SerializeField]
     private int stopTimerIndex;
 
+    [SerializeField]
     private float startTime = 100;
 
     public ReactiveProperty<int> questionNoIndex = new ReactiveProperty<int>();
@@ -123,16 +127,6 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 時間をスコアに代入
-    /// </summary>
-    public void DisplayScore()
-    {
-        Score.Value += Timer.Value;
-
-        SumScore.Value = Timer.Value;
-    }
-
-    /// <summary>
     /// タイマーの開始、停止
     /// </summary>
     /// <param name="gameManager"></param>
@@ -143,15 +137,41 @@ public class UIManager : MonoBehaviour
 
         Timer.Value = startTime; 
 
-        //正解するまでタイマーを動かすための変数を用意
+        //今の問題番号とタイマーを操作するための変数を同期する
         stopTimerIndex = gameManager.QuestionNO;
 
         while (true)
         {
+            //制限時間を超えたらタイマーを止めて次の問題へ移行する
+            if (Timer.Value <= 0)
+            {
+                DisplayAnswer(6);
+
+                gameManager.QuestionNO++;
+
+               //Debug.Log("timeup2");
+
+                //TimeUPを表示
+                DisplayTimeUp();
+              
+                TimerReset(6);
+
+                DOVirtual.DelayedCall(6, () =>
+                {
+                    //Debug.Log("timeup3");
+                    gameManager.NextQuestionPreparate();
+                });
+
+                //if文がループしないようにTimerを一旦0以上にする               
+                Timer.Value = 0.1f;
+            }
+
+            //正解するまでタイマーを動かす
             if (stopTimerIndex == gameManager.QuestionNO)
             {
                 Timer.Value -= Time.deltaTime;
             }
+            //正解したらタイマーを止める
             else
             {
                 Timer.Value = Timer.Value;
@@ -163,26 +183,40 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// タイマーの再開
     /// </summary>
-    public void TimerReset()
+    public void TimerReset(int waitSeconds)
     {
-        DOVirtual.DelayedCall(5, () =>
+        DOVirtual.DelayedCall(waitSeconds, () =>
          {
+             //タイマーを初期値に戻す
              Timer.Value = startTime;
 
+             //問題番号と数値を一致させる
              stopTimerIndex++;
          });
     }
 
     /// <summary>
-    /// 正解時に答えを表示する。
+    /// 時間をスコアに代入
     /// </summary>
-    public void DisplayAnswer()
+    public void DisplayScore()
+    {
+        Score.Value += Timer.Value;
+
+        SumScore.Value = Timer.Value;
+    }
+
+    /// <summary>
+    /// 答えを表示する。
+    /// </summary>
+    public void DisplayAnswer(int displayTime)
     {
         txtAnswer.gameObject.SetActive(true);
 
+        Debug.Log(gameManager.QuestionNO);
+
         StrAnswer.Value = DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].name;
 
-            DOVirtual.DelayedCall(5, () =>
+            DOVirtual.DelayedCall(displayTime, () =>
             {
                 txtAnswer.gameObject.SetActive(false);
             });
@@ -194,5 +228,22 @@ public class UIManager : MonoBehaviour
     public void DisplayQuestionNo()
     {
         questionNoIndex.Value = DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].Number;
+    }
+
+    /// <summary>
+    /// 時間切れになった時に表示
+    /// </summary>
+    public void DisplayTimeUp()
+    {
+        var sequence = DOTween.Sequence();
+
+        sequence.Append(txtTimeUp.DOFade(1, 3))
+            .Join(txtTimeUp.transform.DOScale(5, 5))
+
+            .Join(DOVirtual.DelayedCall(6, () =>
+            {
+                txtTimeUp.DOFade(0, 0);
+                txtTimeUp.transform.DOScale(1, 0);
+            }));
     }
 }

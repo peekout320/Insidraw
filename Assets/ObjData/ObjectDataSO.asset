@@ -18,10 +18,14 @@ MonoBehaviour:
     UnknownObj: {fileID: 4252686892600039589, guid: 975cb13af23fa4221a01b7471cf6928e, type: 3}
     color: {r: 0.990566, g: 0.88352853, b: 0.023362402, a: 1}
   - Number: 2
-    name: "\u3042\u3056\u3089\u3057"
-    UnknownObj: {fileID: 3557601991045497918, guid: 7927509d6c28d43cbbce2877dc9b8ec7, type: 3}
-    color: {r: 0.3982734, g: 0.40025786, b: 0.4716981, a: 1}
-  - Number: 3
     name: "\u308A\u3093\u3054"
     UnknownObj: {fileID: 893345086340947914, guid: 9ee886bb25f384952afc21a20b3f5dfa, type: 3}
     color: {r: 1, g: 0.042452812, b: 0.042452812, a: 1}
+  - Number: 3
+    name: "\u3042\u3056\u3089\u3057"
+    UnknownObj: {fileID: 3557601991045497918, guid: 7927509d6c28d43cbbce2877dc9b8ec7, type: 3}
+    color: {r: 0.3982734, g: 0.40025786, b: 0.4716981, a: 1}
+  - Number: 4
+    name: "\u3046\u307E"
+    UnknownObj: {fileID: 4864817986576313983, guid: a7e5bd6fb3df8404aaf13d60d29ade99, type: 3}
+    color: {r: 0.6603774, g: 0.30394343, b: 0.028034877, a: 1}

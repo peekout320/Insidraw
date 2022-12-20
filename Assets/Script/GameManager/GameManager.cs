@@ -17,10 +17,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private int questionNo;
-    public int QuestionNO { get => questionNo; }
+    public int QuestionNO { get => questionNo; set => questionNo = value; }
 
     [SerializeField]
-    private SplineController splineCon;
+    private SplineController CollectSpline;
 
     [SerializeField]
     private AudioClip trueAudio;
@@ -53,13 +53,13 @@ public class GameManager : MonoBehaviour
             Debug.Log("正解");
 
             //答えを表示
-            uiManager.DisplayAnswer();
+            uiManager.DisplayAnswer(5);
 
             //次の問題番号を取得
             questionNo++;
 
             //タイマーストップ
-            uiManager.TimerReset();
+            uiManager.TimerReset(5);
 
             //スコアを加算
             uiManager.DisplayScore();
@@ -68,36 +68,14 @@ public class GameManager : MonoBehaviour
             AudioSource.PlayClipAtPoint(trueAudio,Camera.main.transform.position);
 
             //◯を描画
-            StartCoroutine(splineCon.OnSpline());
+            StartCoroutine(CollectSpline.OnSpline());
 
             Debug.Log("test");
 
             //数秒おいて次のオブジェクトに切り替える
             DOVirtual.DelayedCall(5, () =>
             {
-                //パーティクルを解除
-                generator.OffParticle();
-
-                //現在のUnkownObjectを破棄
-                generator.DestroyUnknownObject();
-
-                 //スプラインを再設置
-                 splineCon.OffSpline();
-
-                 //ボールを再設定
-                 generator.Re_SetupGenerateBalls();
-
-                 DOVirtual.DelayedCall(0.5f, () =>
-                 {
-
-                     //次のUnkownObjectを設置
-                     generator.GenerateUnknownObject(this);
-
-                     generator.OnParticle();
-
-                     uiManager.DisplayQuestionNo();
-                 });
-
+                NextQuestionPreparate();
              });
         }
         else
@@ -107,6 +85,40 @@ public class GameManager : MonoBehaviour
             //不正解SE
             AudioSource.PlayClipAtPoint(falseAudio, Camera.main.transform.position);
         }
+    }
+
+    /// <summary>
+    /// 次の問題へ移行するための準備
+    /// </summary>
+    public void NextQuestionPreparate()
+    {
+        //入力フォームを消去
+        view.InputForm.text = null;
+
+        //パーティクルを解除
+        generator.OffParticle();
+
+        //現在のUnkownObjectを破棄
+        generator.DestroyUnknownObject();
+
+        //スプラインを再設置
+        CollectSpline.OffSpline();
+
+        //ボールを再設定
+        generator.Re_SetupGenerateBalls();
+
+        DOVirtual.DelayedCall(0.5f, () =>
+        {
+
+            //次のUnkownObjectを設置
+            generator.GenerateUnknownObject(this);
+
+            //パーティクル再始動
+            generator.OnParticle();
+
+            //問題番号更新
+            uiManager.DisplayQuestionNo();
+        });
     }
 
 }
