@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class GameManager : MonoBehaviour
@@ -16,11 +17,14 @@ public class GameManager : MonoBehaviour
     private View view;
 
     [SerializeField]
-    private int questionNo;
-    public int QuestionNO { get => questionNo; set => questionNo = value; }
+    private Text txtGameStart;
 
     [SerializeField]
     private SplineController CollectSpline;
+
+    [SerializeField]
+    private int questionNo;
+    public int QuestionNO { get => questionNo; set => questionNo = value; }
 
     [SerializeField]
     private AudioClip trueAudio;
@@ -30,6 +34,19 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(StartGame());
+    }
+
+    /// <summary>
+    /// 数秒間を持たせてからゲームを始動する。
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator StartGame()
+    {
+        uiManager.ShowUpText(txtGameStart);
+
+        yield return new WaitForSeconds(3);
+
         //問題となるオブジェクトの生成
         generator.GenerateUnknownObject(this);
 
@@ -46,6 +63,9 @@ public class GameManager : MonoBehaviour
         uiManager.DisplayQuestionNo();
     }
 
+    /// <summary>
+    /// InputFieldに入力した答えとの整合を行う
+    /// </summary>
     public void JudgeString()
     {
         if (view.InputForm.text == DataBaseManager.instance.objectDataSO.objrctDataList[questionNo].name)
@@ -120,5 +140,4 @@ public class GameManager : MonoBehaviour
             uiManager.DisplayQuestionNo();
         });
     }
-
 }

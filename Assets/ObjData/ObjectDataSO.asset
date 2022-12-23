@@ -29,3 +29,7 @@ MonoBehaviour:
     name: "\u3046\u307E"
     UnknownObj: {fileID: 4864817986576313983, guid: a7e5bd6fb3df8404aaf13d60d29ade99, type: 3}
     color: {r: 0.6603774, g: 0.30394343, b: 0.028034877, a: 1}
+  - Number: 5
+    name: '  '
+    UnknownObj: {fileID: 2805185374650629471, guid: 7840c0073dfb44c729b87f2ba439913f, type: 3}
+    color: {r: 1, g: 1, b: 1, a: 0}

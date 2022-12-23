@@ -35,20 +35,16 @@ public class Generator : MonoBehaviour
     [SerializeField]
     private Transform UnknownObjTran;
 
-   
-    //for文で共有するための数値
-    private int listIndex;
-
 
     /// <summary>
     /// ボールを３つ生成する
     /// </summary>
     public void GenerateBall()
     {
-        for (listIndex = 0; listIndex < 3; listIndex++)
+        for (int i = 0; i < 3; i++)
         {
             //ボールを生成しリストに追加
-            generateBall = Instantiate(ballPrefab, ballsTran[listIndex], false);
+            generateBall = Instantiate(ballPrefab, ballsTran[i], false);
 
             AddGenerateBalls();
 
@@ -61,6 +57,7 @@ public class Generator : MonoBehaviour
 
             AddTrails(trail);
 
+            //パーティクルの色を設定する
             SetParticalColor(trail);
         }
 
@@ -80,28 +77,32 @@ public class Generator : MonoBehaviour
     }
 
     /// <summary>
-    /// 生成したボールの子オブジェクトのパーティクルをリスト化する
+    /// 生成したパーティクルをリスト化する。
     /// </summary>
-    private void AddTrails(ParticleSystem.TrailModule trail)
-    {
-        TrailList.Add(trail);
-    }
-
+    /// <param name="particle"></param>
     private void AddParticals(ParticleSystem particle)
     {
         particleList.Add(particle);
     }
 
     /// <summary>
-    /// ボールを開始位置にリセットし、再配色する。
+    /// パーティクルTrailを配色するためのリストを作成
+    /// </summary>
+    private void AddTrails(ParticleSystem.TrailModule trail)
+    {
+        TrailList.Add(trail);
+    }
+
+    /// <summary>
+    /// ボールを開始位置に戻し、再配色する。
     /// </summary>
     public void Re_SetupGenerateBalls()
     {
-        for (listIndex = 0; listIndex < generateBallList.Count; listIndex++)
+        for (int i = 0; i < generateBallList.Count; i++)
         {
-            generateBallList[listIndex].transform.position = Vector3.zero;
+            generateBallList[i].transform.position = Vector3.zero;
 
-            SetParticalColor(TrailList[listIndex]);
+            SetParticalColor(TrailList[i]);
         }
     }
 
@@ -142,7 +143,7 @@ public class Generator : MonoBehaviour
     /// </summary>
     public void OnParticle()
     {
-        for(int i =0; i< particleList.Count;i++)
+        for(int i = 0; i< particleList.Count;i++)
         {
             particleList[i].gameObject.SetActive(true);
         }

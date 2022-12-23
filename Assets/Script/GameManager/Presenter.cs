@@ -12,20 +12,32 @@ public class Presenter : MonoBehaviour
     private View view;
 
     [SerializeField]
-    private BallController ballcon;
+    private UIManager uiManager;
 
     [SerializeField]
-    private UIManager uiManager;
+    private BallController ballcon;
 
 
     void Start()
     {
+        StartCoroutine(SetupPresenter());
+    }
+
+    /// <summary>
+    /// GameManagerのStart関数より少し間を持たせてからセットアップ開始
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SetupPresenter()
+    {
+        yield return new WaitForSeconds(3.5f);
+
         ReflectSliderValue();
         ReflectTimer();
         ReflectScore();
         ReflectSumScore();
         ReflectAnswer();
         ReflectQuestionNo();
+        ReflectGameOverText();
     }
 
     /// <summary>
@@ -77,8 +89,19 @@ public class Presenter : MonoBehaviour
         uiManager.StrAnswer.Subscribe(x => view.ViewTextAnswer(x)).AddTo(this);
     }
 
+    /// <summary>
+    /// UIManager(Model)クラスの問題番号int変数をViewクラスへ反映させる
+    /// </summary>
     private void ReflectQuestionNo()
     {
         uiManager.questionNoIndex.Subscribe(x => view.ViewQuestionNo(x)).AddTo(this);
+    }
+
+    /// <summary>
+    /// UIManager(Model)クラスのゲームオーバー時に表示するテキストをViewクラスへ反映させる
+    /// </summary>
+    private void ReflectGameOverText()
+    {
+        uiManager.questionNoIndex.Subscribe(x => StartCoroutine(uiManager.GameOver(x))).AddTo(this);
     }
 }

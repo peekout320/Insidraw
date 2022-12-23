@@ -29,6 +29,8 @@ public class Ball : MonoBehaviour
         speedY = Random.Range(-3f, 3f);
         speedZ = Random.Range(-3f, 3f);
 
+        Debug.Log("speedX" + speedX);
+
         //BallSpeeds.Add(speedX);
         //BallSpeeds.Add(speedY);
         //BallSpeeds.Add(speedZ);

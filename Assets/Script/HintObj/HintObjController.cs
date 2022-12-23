@@ -17,6 +17,7 @@ public class HintObjController : MonoBehaviour
     [SerializeField]
     private Material material3;
 
+    [SerializeField]
     private float fadeSpeed = 120;
 
 

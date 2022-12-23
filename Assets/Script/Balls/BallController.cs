@@ -37,13 +37,17 @@ public class BallController : MonoBehaviour
         if (!isMoving) return;
         for (int i = 0; i < ballList.Count; i++)
         {
+            //velocityに制限をつけてrigidbodyで動かす
             rigidList[i].velocity = Vector3.ClampMagnitude(rigidList[i].velocity, limitSpeed);
 
             rigidList[i].AddForce(new Vector3(ballList[i].SpeedX, ballList[i].SpeedY, ballList[i].SpeedZ), ForceMode.Force);
+
+            Debug.Log(rigidList[i].velocity);
+            Debug.Log(ballList[i].SpeedX + "speedX");
         }
     }
     /// <summary>
-    /// ボールの初動。velocityに制限をつけてrigidbodyで動かす
+    /// ボールの初動。isMovingをtrueにしてFixedUpdat内でAddForceする。
     /// </summary>
     /// <param name="balls"></param>
     /// <returns></returns>
@@ -55,7 +59,7 @@ public class BallController : MonoBehaviour
         {
             rigid = balls[i].GetComponent<Rigidbody>();
 
-            AddrigidList();
+            AddrigidList(rigid);
 
             isMoving = true;
         }
@@ -66,9 +70,9 @@ public class BallController : MonoBehaviour
     /// <summary>
     /// ボールのRigidbody型のリストに追加
     /// </summary>
-    private void AddrigidList()
+    public void AddrigidList(Rigidbody rigidbody)
     {
-        rigidList.Add(rigid);
+        rigidList.Add(rigidbody);
     }
 
     /// <summary>
@@ -86,4 +90,5 @@ public class BallController : MonoBehaviour
                 .AddTo(this);
         }
     }
+
 }

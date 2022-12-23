@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 問題となるオブジェクトのデータ
+/// </summary>
 [System.Serializable]
 public class ObjectData
 {

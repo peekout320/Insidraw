@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// UIManagerにアタッチ
@@ -27,6 +28,9 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Text txtTimeUp;
+
+    [SerializeField]
+    private Text txtGameOver;
 
     [SerializeField]
     private int stopTimerIndex;
@@ -152,7 +156,7 @@ public class UIManager : MonoBehaviour
                //Debug.Log("timeup2");
 
                 //TimeUPを表示
-                DisplayTimeUp();
+                ShowUpText(txtTimeUp);
               
                 TimerReset(6);
 
@@ -231,19 +235,37 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 時間切れになった時に表示
+    /// テキストを中央にScaleを拡大しながらフェードイン表示
     /// </summary>
-    public void DisplayTimeUp()
+    public void ShowUpText(Text displayText)
     {
         var sequence = DOTween.Sequence();
 
-        sequence.Append(txtTimeUp.DOFade(1, 3))
-            .Join(txtTimeUp.transform.DOScale(5, 5))
+        sequence.Append(displayText.DOFade(1, 3))
+            .Join(displayText.transform.DOScale(5, 5))
 
             .Join(DOVirtual.DelayedCall(6, () =>
             {
-                txtTimeUp.DOFade(0, 0);
-                txtTimeUp.transform.DOScale(1, 0);
+                displayText.DOFade(0, 0);
+                displayText.transform.DOScale(1, 0);
             }));
     }
+
+    /// <summary>
+    /// GameOverをテキストで表示。
+    /// </summary>
+    /// <param name="questionNo"></param>
+    /// <returns></returns>
+    public IEnumerator GameOver(int questionNo)
+    {
+        if (questionNo == 5)
+        {
+            ShowUpText(txtGameOver);
+
+            yield return new WaitForSeconds(8);
+
+            SceneManager.LoadScene("TitleScene");
+        }
+    }
+
 }

@@ -4,13 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
+/// <summary>
+/// TitleScene用のクラス、GameManagerにアタッチ
+/// </summary>
 public class TitleScene : MonoBehaviour
 {
     [SerializeField]
-    private GameObject applePrefab;
+    private GameObject UnknownObjPrefab;
     [SerializeField]
-    private Transform appleTran;
+    private Transform UnknownObjTran;
 
     [SerializeField]
     private BallController ballCon;
@@ -31,20 +35,40 @@ public class TitleScene : MonoBehaviour
     private float fadeSpeed = 5;
 
     [SerializeField]
-    private AudioClip bgmAudio;
+    private Button btnStart;
+
+    [SerializeField]
+    private Button btnTutrial;
+
+    [SerializeField]
+    private AudioClip startButtonSE;
+
+    [SerializeField]
+    private AudioClip tutrialButtonSE;
+
+    [SerializeField]
+    private AudioSource bgmAudio;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(MoveStartBall_Title());
+        StartCoroutine(StartGame());
+
+        btnStart.onClick.AddListener(() => StartCoroutine(ChangeScene()));
+        btnTutrial.onClick.AddListener(() => ClickTutrialButton());
     }
 
-    private IEnumerator MoveStartBall_Title()
+    private IEnumerator StartGame()
     {
-        Instantiate(applePrefab, appleTran, false);
+        //UnknownObjectの生成
+        Instantiate(UnknownObjPrefab, UnknownObjTran, false);
 
+        //ボールとUIのフェードイン
         for(int i = 0;i < ballCon.ballList.Count; i++)
         {
+            //Debug.Log(imgDislay);
+
             imgDislay[i].DOFade(0, 0);
 
             imgDislay[i].DOFade(1, fadeSpeed);
@@ -52,20 +76,59 @@ public class TitleScene : MonoBehaviour
             material1.DOFade(0, 0);
 
             material1.DOFade(1, fadeSpeed);
-
         }
 
         yield return new WaitForSeconds(3);
 
-        AudioSource.PlayClipAtPoint(bgmAudio, vCam.transform.position, 1f);
+        //BGMの再生
+        bgmAudio.Play();
 
         yield return new WaitForSeconds(2);
 
-        ballCon.MovingBall(ballCon.ballList);
+        //ボールを動かす
+        MovingBall_Title();
 
-        vCam.Follow = ballCon.ballList[0].transform;
-        vCam.LookAt = ballCon.ballList[0].transform;
+        //CinemachineCameraで演出
+        vCam.enabled = true;
 
+        //キー入力でボールに力を加える
         StartCoroutine(uiManager.KeyInputSlider());
     }
+
+    /// <summary>
+    /// MainSceneに遷移する
+    /// </summary>
+    private IEnumerator ChangeScene()
+    {
+        AudioSource.PlayClipAtPoint(startButtonSE, Camera.main.transform.position,1);
+
+        yield return new WaitForSeconds(4);
+
+        SceneManager.LoadScene("MainScene");
+    }
+
+    private void ClickTutrialButton()
+    {
+        AudioSource.PlayClipAtPoint(tutrialButtonSE, Camera.main.transform.position,1);
+    }
+
+    public void MovingBall_Title()
+    {
+        
+        for (int i = 0; i < ballCon.ballList.Count; i++)
+        {
+            ballCon.ballList[i].SpeedX = Random.Range(-3f, 3f);
+            ballCon.ballList[i].SpeedY = Random.Range(-3f, 3f);
+            ballCon.ballList[i].SpeedZ = Random.Range(-3f, 3f);
+
+            Rigidbody rigid = ballCon.ballList[i].GetComponent<Rigidbody>();
+
+            ballCon.AddrigidList(rigid);
+
+            ballCon.IsMoving = true;
+        }
+
+        //Debug.Log(rigid.velocity.magnitude + "rigid.velocity");
+    }
+
 }
