@@ -38,16 +38,16 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 数秒間を持たせてからゲームを始動する。
+    /// 演出のため数秒、間を持たせてからゲームを始動する。
     /// </summary>
     /// <returns></returns>
     private IEnumerator StartGame()
     {
-        uiManager.ShowUpText(txtGameStart);
+        uiManager.ShowUpText(txtGameStart,6);
 
         yield return new WaitForSeconds(3);
 
-        //問題となるオブジェクトの生成
+        //問題となるUnknownオブジェクトの生成
         generator.GenerateUnknownObject(this);
 
         //ボール生成

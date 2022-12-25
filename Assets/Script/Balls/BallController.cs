@@ -42,8 +42,8 @@ public class BallController : MonoBehaviour
 
             rigidList[i].AddForce(new Vector3(ballList[i].SpeedX, ballList[i].SpeedY, ballList[i].SpeedZ), ForceMode.Force);
 
-            Debug.Log(rigidList[i].velocity);
-            Debug.Log(ballList[i].SpeedX + "speedX");
+            //Debug.Log(rigidList[i].velocity);
+            //Debug.Log(ballList[i].SpeedX + "speedX");
         }
     }
     /// <summary>

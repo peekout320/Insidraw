@@ -32,11 +32,19 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text txtGameOver;
 
+    //タイマー用のメンバ変数
     [SerializeField]
     private int stopTimerIndex;
-
     [SerializeField]
     private float startTime = 100;
+
+    //フェードアウト/フェードイン演出用のメンバ変数
+    [SerializeField]
+    Fade fade;
+    [SerializeField]
+    FadeImage fadeImg;
+    [SerializeField]
+    private Texture fadeOutTexture;
 
     public ReactiveProperty<int> questionNoIndex = new ReactiveProperty<int>();
 
@@ -47,7 +55,6 @@ public class UIManager : MonoBehaviour
     public ReactiveProperty<float> SumScore = new ReactiveProperty<float>();
 
     public ReactiveProperty<string> StrAnswer = new ReactiveProperty<string>();
-
 
     /// <summary>
     /// キー入力をスライダーに反映
@@ -156,7 +163,7 @@ public class UIManager : MonoBehaviour
                //Debug.Log("timeup2");
 
                 //TimeUPを表示
-                ShowUpText(txtTimeUp);
+                ShowUpText(txtTimeUp,5.5f);
               
                 TimerReset(6);
 
@@ -237,18 +244,27 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// テキストを中央にScaleを拡大しながらフェードイン表示
     /// </summary>
-    public void ShowUpText(Text displayText)
+    public void ShowUpText(Text displayText, float showTime)
     {
         var sequence = DOTween.Sequence();
 
         sequence.Append(displayText.DOFade(1, 3))
-            .Join(displayText.transform.DOScale(5, 5))
+            .Join(displayText.transform.DOScale(3, 5))
 
-            .Join(DOVirtual.DelayedCall(6, () =>
+            .Join(DOVirtual.DelayedCall(showTime, () =>
             {
-                displayText.DOFade(0, 0);
-                displayText.transform.DOScale(1, 0);
+                displayText.DOFade(0, 1);
+                displayText.transform.DOScale(0.5f, 1);
             }));
+    }
+
+    public IEnumerator FlashText(float startTime,Text displayText)
+    {
+        yield return new WaitForSeconds(startTime);
+
+        displayText.DOFade(1, 2)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetLink(displayText.gameObject);
     }
 
     /// <summary>
@@ -260,12 +276,38 @@ public class UIManager : MonoBehaviour
     {
         if (questionNo == 5)
         {
-            ShowUpText(txtGameOver);
+            ShowUpText(txtGameOver,7);
 
             yield return new WaitForSeconds(8);
 
             SceneManager.LoadScene("TitleScene");
         }
+    }
+
+    /// <summary>
+    /// シーン遷移フェードアウトの演出
+    /// </summary>
+    /// <param name="texture"></param>
+    public void FadeOutScreen(Texture texture)
+    {
+        fadeImg.UpdateMaskTexture(texture);
+
+        fade.FadeOut(3);   
+    }
+
+    /// <summary>
+    /// シーン遷移フェードインの演出
+    /// </summary>
+    public void FadeInScreen(Texture texture)
+    {
+        fadeImg.UpdateMaskTexture(texture);
+
+        fade.FadeIn(3);
+    }
+
+    private void Start()
+    {
+        FadeOutScreen(fadeOutTexture);
     }
 
 }

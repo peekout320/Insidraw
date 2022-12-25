@@ -26,13 +26,22 @@ public class TitleScene : MonoBehaviour
     private UIManager uiManager;
 
     [SerializeField]
-    private Image[] imgDislay;
+    private Image[] imgDisplay;
+
+    [SerializeField]
+    private Text txtDisplay;
 
     [SerializeField]
     private Material material1;
 
     [SerializeField]
     private float fadeSpeed = 5;
+
+    [SerializeField]
+    Fade fade;
+
+    [SerializeField]
+    private Texture fadeInTexture;
 
     [SerializeField]
     private Button btnStart;
@@ -65,18 +74,18 @@ public class TitleScene : MonoBehaviour
         Instantiate(UnknownObjPrefab, UnknownObjTran, false);
 
         //ボールとUIのフェードイン
-        for(int i = 0;i < ballCon.ballList.Count; i++)
+        for (int i = 0; i < ballCon.ballList.Count; i++)
         {
-            //Debug.Log(imgDislay);
-
-            imgDislay[i].DOFade(0, 0);
-
-            imgDislay[i].DOFade(1, fadeSpeed);
-
-            material1.DOFade(0, 0);
-
-            material1.DOFade(1, fadeSpeed);
+            imgDisplay[i].DOFade(0, 0);
+            imgDisplay[i].DOFade(1, fadeSpeed);
         }
+
+        txtDisplay.DOFade(0, 0);
+        txtDisplay.DOFade(1, fadeSpeed);
+
+        material1.DOFade(0, 0);
+        material1.DOFade(1, fadeSpeed);
+        
 
         yield return new WaitForSeconds(3);
 
@@ -102,6 +111,10 @@ public class TitleScene : MonoBehaviour
     {
         AudioSource.PlayClipAtPoint(startButtonSE, Camera.main.transform.position,1);
 
+        yield return new WaitForSeconds(2);
+
+        uiManager.FadeInScreen(fadeInTexture);
+
         yield return new WaitForSeconds(4);
 
         SceneManager.LoadScene("MainScene");
@@ -117,9 +130,9 @@ public class TitleScene : MonoBehaviour
         
         for (int i = 0; i < ballCon.ballList.Count; i++)
         {
-            ballCon.ballList[i].SpeedX = Random.Range(-3f, 3f);
-            ballCon.ballList[i].SpeedY = Random.Range(-3f, 3f);
-            ballCon.ballList[i].SpeedZ = Random.Range(-3f, 3f);
+            ballCon.ballList[i].SpeedX = Random.Range(-5f, 5f);
+            ballCon.ballList[i].SpeedY = Random.Range(-5f, 5f);
+            ballCon.ballList[i].SpeedZ = Random.Range(-5f, 5f);
 
             Rigidbody rigid = ballCon.ballList[i].GetComponent<Rigidbody>();
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 
 /// <summary>
-/// UnkownObject -> 球.001にアタッチ
+/// UnkownObject -> 各Objectの胴体となるオブジェクトにアタッチ
 /// </summary>
 public class HintObjController : MonoBehaviour
 {

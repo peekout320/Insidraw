@@ -348,4 +348,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material1: {fileID: 2100000, guid: 3441d178bb55d4a47a6eeabc2453f3e2, type: 2}
-  material2: {fileID: 2100000, guid: 819a8383c5cf3450fb6c2820c86e8410, type: 2}
+  material2: {fileID: 2100000, guid: 5859860cda63a413380f97a9896366f4, type: 2}
+  material3: {fileID: 2100000, guid: cb1d6861053ad4afcb56ee1957a85fca, type: 2}
+  fadeSpeed: 120
