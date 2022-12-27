@@ -258,6 +258,12 @@ public class UIManager : MonoBehaviour
             }));
     }
 
+    /// <summary>
+    /// テキストを点滅させる
+    /// </summary>
+    /// <param name="startTime"></param>
+    /// <param name="displayText"></param>
+    /// <returns></returns>
     public IEnumerator FlashText(float startTime,Text displayText)
     {
         yield return new WaitForSeconds(startTime);

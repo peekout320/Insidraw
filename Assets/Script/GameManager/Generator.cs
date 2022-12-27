@@ -57,7 +57,6 @@ public class Generator : MonoBehaviour
 
             AddTrails(trail);
 
-            //パーティクルの色を設定する
             SetParticalColor(trail);
         }
 
