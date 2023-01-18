@@ -104,4 +104,9 @@ public class Presenter : MonoBehaviour
     {
         uiManager.questionNoIndex.Subscribe(x => StartCoroutine(uiManager.GameOver(x))).AddTo(this);
     }
+
+    public void ReflectTutrialTelop()
+    {
+        uiManager.StrTutrial.Subscribe(x => view.ViewTutrialTelop(x)).AddTo(this);
+    }
 }

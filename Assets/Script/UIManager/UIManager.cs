@@ -46,6 +46,17 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Texture fadeOutTexture;
 
+    private float telopSpeed = 8;
+
+    [SerializeField]
+    private CanvasGroup imgBallControlPanel;
+
+    [SerializeField]
+    private CanvasGroup imgCameraControl;
+
+    [SerializeField]
+    private CanvasGroup InputForm;
+
     public ReactiveProperty<int> questionNoIndex = new ReactiveProperty<int>();
 
     public ReactiveProperty<float> Timer = new ReactiveProperty<float>();
@@ -55,6 +66,9 @@ public class UIManager : MonoBehaviour
     public ReactiveProperty<float> SumScore = new ReactiveProperty<float>();
 
     public ReactiveProperty<string> StrAnswer = new ReactiveProperty<string>();
+
+    public ReactiveProperty<string> StrTutrial = new ReactiveProperty<string>();
+
 
     /// <summary>
     /// キー入力をスライダーに反映
@@ -291,17 +305,6 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// シーン遷移フェードアウトの演出
-    /// </summary>
-    /// <param name="texture"></param>
-    public void FadeOutScreen(Texture texture)
-    {
-        fadeImg.UpdateMaskTexture(texture);
-
-        fade.FadeOut(3);   
-    }
-
-    /// <summary>
     /// シーン遷移フェードインの演出
     /// </summary>
     public void FadeInScreen(Texture texture)
@@ -311,9 +314,66 @@ public class UIManager : MonoBehaviour
         fade.FadeIn(3);
     }
 
+    /// <summary>
+    /// シーン遷移フェードアウトの演出
+    /// </summary>
+    /// <param name="texture"></param>
+    public void FadeOutScreen(Texture texture)
+    {
+        fadeImg.UpdateMaskTexture(texture);
+
+        fade.FadeOut(3);   
+    }
     private void Start()
     {
         FadeOutScreen(fadeOutTexture);
     }
 
+    public IEnumerator TutrialTelop()
+    {
+        yield return new WaitForSeconds(5);
+
+        StrTutrial.Value = "ゲーム内には３つのボールが存在します。";
+
+        yield return new WaitForSeconds(telopSpeed);
+
+        StrTutrial.Value = "ボールは移動すると軌跡が残り、物体に色を塗ることができます。";
+
+        yield return new WaitForSeconds(telopSpeed);
+
+        imgBallControlPanel.DOFade(1, 2);
+
+        StrTutrial.Value = "ボールの操作 縦(R,Tキー)　横(F,Gキー)　奥(V,Bキー)";
+
+        yield return new WaitForSeconds(telopSpeed);
+
+        imgCameraControl.DOFade(1, 2);
+
+        StrTutrial.Value = "←→↑↓キーでカメラを操作できます。";
+
+        yield return new WaitForSeconds(telopSpeed);
+
+        InputForm.DOFade(1, 2);
+
+        StrTutrial.Value = "オブジェクトが何か分かったら入力フォームにひらがなで答えを入力してください。";
+
+        yield return new WaitForSeconds(telopSpeed);
+
+        StrTutrial.Value = "正解すると残りのTimeがScoreに加算されます。";
+
+        yield return new WaitForSeconds(telopSpeed);
+
+        StrTutrial.Value = "正解するか、制限時間が０になると次の問題に移ります。";
+
+        yield return new WaitForSeconds(telopSpeed);
+
+        StrTutrial.Value = null;
+
+        FadeInScreen(fadeOutTexture);
+
+        yield return new WaitForSeconds(telopSpeed);
+
+        SceneManager.LoadScene("MainScene");
+
+    }
 }

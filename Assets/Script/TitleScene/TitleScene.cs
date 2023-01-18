@@ -70,7 +70,7 @@ public class TitleScene : MonoBehaviour
         StartCoroutine(StartGame());
 
         btnStart.onClick.AddListener(() => StartCoroutine(ChangeScene()));
-        btnTutrial.onClick.AddListener(() => ClickTutrialButton());
+        btnTutrial.onClick.AddListener(() => StartCoroutine(ClickTutrialButton()));
     }
 
     private IEnumerator StartGame()
@@ -147,9 +147,17 @@ public class TitleScene : MonoBehaviour
     /// <summary>
     /// チュートリアルボタンを押下時の処理
     /// </summary>
-    private void ClickTutrialButton()
+    private IEnumerator ClickTutrialButton()
     {
-        AudioSource.PlayClipAtPoint(tutrialButtonSE, Camera.main.transform.position,1);
+        AudioSource.PlayClipAtPoint(startButtonSE, Camera.main.transform.position, 1);
+
+        yield return new WaitForSeconds(2);
+
+        uiManager.FadeInScreen(fadeInTexture);
+
+        yield return new WaitForSeconds(4);
+
+        SceneManager.LoadScene("TutrialScene");
     }
 
     /// <summary>

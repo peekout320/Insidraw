@@ -28,6 +28,9 @@ public class View : MonoBehaviour
     [SerializeField]
     private Text txtquetionNo;
 
+    [SerializeField]
+    private Text txtTelop;
+
 
     public void ViewScore(float viewScore)
     {
@@ -59,5 +62,10 @@ public class View : MonoBehaviour
     public void ViewQuestionNo(int questionNo)
     {
         txtquetionNo.text = questionNo.ToString();
+    }
+
+    public void ViewTutrialTelop(string telop)
+    {
+        txtTelop.text = telop;
     }
 }
