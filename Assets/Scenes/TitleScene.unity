@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.030160882, g: 0.07908974, b: 0.1691747, a: 1}
+  m_IndirectSpecularColor: {r: 0.030321972, g: 0.07873163, b: 0.16870558, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2535,6 +2535,9 @@ MonoBehaviour:
   fade: {fileID: 640306710}
   fadeImg: {fileID: 640306711}
   fadeOutTexture: {fileID: 2800000, guid: 3ba52f8718a5f46cc8e7770e7da7e353, type: 3}
+  imgBallControlPanel: {fileID: 0}
+  imgCameraControl: {fileID: 0}
+  InputForm: {fileID: 0}
   questionNoIndex:
     value: 0
   Timer:
@@ -2544,6 +2547,8 @@ MonoBehaviour:
   SumScore:
     value: 0
   StrAnswer:
+    value: 
+  StrTutrial:
     value: 
 --- !u!114 &1093852308
 MonoBehaviour:
@@ -2563,6 +2568,7 @@ MonoBehaviour:
   txtTimer: {fileID: 1206125772}
   txtAnswer: {fileID: 1206125772}
   txtquetionNo: {fileID: 1206125772}
+  txtTelop: {fileID: 0}
 --- !u!114 &1093852309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18621,7 +18627,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854269770887740129}
-  m_Material: {fileID: 13400000, guid: da89c1b2cce024010a86eef8914ae17f, type: 2}
+  m_Material: {fileID: 13400000, guid: 6d0df4b7e46214cf3a3177a1a438517d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -18642,7 +18648,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854269770840588444}
-  m_Material: {fileID: 13400000, guid: da89c1b2cce024010a86eef8914ae17f, type: 2}
+  m_Material: {fileID: 13400000, guid: 6d0df4b7e46214cf3a3177a1a438517d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -18663,7 +18669,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854269772008317941}
-  m_Material: {fileID: 13400000, guid: da89c1b2cce024010a86eef8914ae17f, type: 2}
+  m_Material: {fileID: 13400000, guid: 6d0df4b7e46214cf3a3177a1a438517d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

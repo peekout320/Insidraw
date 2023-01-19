@@ -32,20 +32,6 @@ public class BallController : MonoBehaviour
     public bool IsMoving { get => isMoving; set => isMoving = value; }
 
 
-    private void FixedUpdate()
-    {
-        if (!isMoving) return;
-        for (int i = 0; i < ballList.Count; i++)
-        {
-            //velocityに制限をつけてrigidbodyで動かす
-            rigidList[i].velocity = Vector3.ClampMagnitude(rigidList[i].velocity, limitSpeed);
-
-            rigidList[i].AddForce(new Vector3(ballList[i].SpeedX, ballList[i].SpeedY, ballList[i].SpeedZ), ForceMode.Force);
-
-            //Debug.Log(rigidList[i].velocity);
-            //Debug.Log(ballList[i].SpeedX + "speedX");
-        }
-    }
     /// <summary>
     /// ボールの初動。isMovingをtrueにしてFixedUpdat内でAddForceする。
     /// </summary>
@@ -63,8 +49,17 @@ public class BallController : MonoBehaviour
 
             isMoving = true;
         }
+    }
+    private void FixedUpdate()
+    {
+        if (!isMoving) return;
+        for (int i = 0; i < ballList.Count; i++)
+        {
+            //velocityに制限をつけてrigidbodyで動かす
+            rigidList[i].velocity = Vector3.ClampMagnitude(rigidList[i].velocity, limitSpeed);
 
-        //Debug.Log(rigid.velocity.magnitude + "rigid.velocity");
+            rigidList[i].AddForce(new Vector3(ballList[i].SpeedX, ballList[i].SpeedY, ballList[i].SpeedZ), ForceMode.Force);
+        }
     }
 
     /// <summary>
@@ -90,5 +85,4 @@ public class BallController : MonoBehaviour
                 .AddTo(this);
         }
     }
-
 }

@@ -170,20 +170,18 @@ public class UIManager : MonoBehaviour
             //制限時間を超えたらタイマーを止めて次の問題へ移行する
             if (Timer.Value <= 0)
             {
+                //TimeUPを表示
+                ShowUpText(txtTimeUp, 5.5f);
+
+                //答えを表示
                 DisplayAnswer(6);
 
                 gameManager.QuestionNO++;
-
-               //Debug.Log("timeup2");
-
-                //TimeUPを表示
-                ShowUpText(txtTimeUp,5.5f);
               
                 TimerReset(6);
 
                 DOVirtual.DelayedCall(6, () =>
                 {
-                    //Debug.Log("timeup3");
                     gameManager.NextQuestionPreparate();
                 });
 
@@ -252,7 +250,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void DisplayQuestionNo()
     {
-        questionNoIndex.Value = DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].Number;
+        questionNoIndex.Value = DataBaseManager.instance.objectDataSO.objrctDataList[gameManager.QuestionNO].Number - 1;
     }
 
     /// <summary>
@@ -329,6 +327,10 @@ public class UIManager : MonoBehaviour
         FadeOutScreen(fadeOutTexture);
     }
 
+    /// <summary>
+    /// TutrialSceneでゲーム説明の文章を表示する
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator TutrialTelop()
     {
         yield return new WaitForSeconds(5);

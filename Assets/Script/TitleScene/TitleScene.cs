@@ -64,7 +64,6 @@ public class TitleScene : MonoBehaviour
     private AudioSource bgmAudio;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(StartGame());
@@ -75,7 +74,7 @@ public class TitleScene : MonoBehaviour
 
     private IEnumerator StartGame()
     {
-        //UnknownObjectの生成
+        //TitleScene用のオブジェクトを生成
         Instantiate(UnknownObjPrefab, UnknownObjTran, false);
 
         //ボールとUIのフェードイン
@@ -88,7 +87,7 @@ public class TitleScene : MonoBehaviour
         material1.DOFade(0, 0);
         material1.DOFade(1, fadeSpeed);
 
-        //WebGL用にクリック時に演出するようにする
+        //WebGL用にクリックするまで演出を待機する
         while (startGameLoop == true)
         {
             if (Input.GetMouseButton(0))
@@ -125,6 +124,7 @@ public class TitleScene : MonoBehaviour
         //キー入力でボールに力を加える
         StartCoroutine(uiManager.KeyInputSlider());
 
+        //特定のテキストを点滅させる
         StartCoroutine(uiManager.FlashText(6, txtFlash));
     }
 
@@ -161,7 +161,7 @@ public class TitleScene : MonoBehaviour
     }
 
     /// <summary>
-    /// タイトル画面におけるボールの始動
+    /// タイトル画面におけるボールの動作
     /// </summary>
     public void MovingBall_Title()
     {       
@@ -179,21 +179,4 @@ public class TitleScene : MonoBehaviour
         }
         //Debug.Log(rigid.velocity.magnitude + "rigid.velocity");
     }
-
-    /// <summary>
-    /// パーティクルを順番にアクティブにする
-    /// </summary>
-    /// <returns></returns>
-    //private IEnumerator InOrderParticle()
-    //{
-    //    particles[0].gameObject.SetActive(true);
-
-    //    yield return new WaitForSeconds(0.85f);
-
-    //    particles[1].gameObject.SetActive(true);
-
-    //    yield return new WaitForSeconds(1.1f);
-
-    //    particles[2].gameObject.SetActive(true);
-    //}
 }

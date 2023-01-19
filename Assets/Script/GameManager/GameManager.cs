@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
         CollectSpline.OffSpline();
 
         //ボールを再設定
-        generator.Re_SetupGenerateBalls();
+        generator.ReSetupGenerateBalls();
 
         DOVirtual.DelayedCall(0.5f, () =>
         {

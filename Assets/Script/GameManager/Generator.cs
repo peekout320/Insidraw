@@ -95,7 +95,7 @@ public class Generator : MonoBehaviour
     /// <summary>
     /// ボールを開始位置に戻し、再配色する。
     /// </summary>
-    public void Re_SetupGenerateBalls()
+    public void ReSetupGenerateBalls()
     {
         for (int i = 0; i < generateBallList.Count; i++)
         {
