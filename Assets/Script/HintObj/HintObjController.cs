@@ -4,7 +4,8 @@ using UnityEngine;
 using DG.Tweening;
 
 /// <summary>
-/// UnkownObject -> 各Objectの胴体となるオブジェクトにアタッチ
+/// ヒントとして、時間経過でオブジェクトの特定のパーツが浮かび上がってくるようにする
+/// Prefab  -> UnkownObject -> 各Objectの胴体となるオブジェクトにアタッチ
 /// </summary>
 public class HintObjController : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class HintObjController : MonoBehaviour
         FadeInObj();
     }
 
+    /// <summary>
+    /// オブジェクトの特定のパーツが浮かび上がってくるようにMaterialのAlph値を変化させる
+    /// </summary>
     private void FadeInObj()
     {
         material1.DOFade(0, 0);

@@ -72,6 +72,12 @@ public class TitleScene : MonoBehaviour
         btnTutrial.onClick.AddListener(() => StartCoroutine(ClickTutrialButton()));
     }
 
+    /// <summary>
+    /// ゲームスタート時にTitleScene用のオブジェクトを生成し、ボールとタイトルをフェードインする演出にする。
+    /// BGMに合わせてボールが動き出す仕組みにしているが、WebGLは最初にゲーム画面をクリックしないと音が流れないので、
+    /// WebGL用にクリックでボールが動き出すように設定している。
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator StartGame()
     {
         //TitleScene用のオブジェクトを生成

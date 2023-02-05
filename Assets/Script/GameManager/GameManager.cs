@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
             uiManager.TimerReset(5);
 
             //スコアを加算
-            uiManager.DisplayScore();
+            uiManager.DisplayPlusScore();
 
             //正解のSE
             AudioSource.PlayClipAtPoint(trueAudio,Camera.main.transform.position);
@@ -104,6 +104,9 @@ public class GameManager : MonoBehaviour
 
             //不正解SE
             AudioSource.PlayClipAtPoint(falseAudio, Camera.main.transform.position);
+
+            uiManager.DisplayMinusScore();
+
         }
     }
 

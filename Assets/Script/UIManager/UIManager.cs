@@ -221,11 +221,26 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// 時間をスコアに代入
     /// </summary>
-    public void DisplayScore()
+    public void DisplayPlusScore()
     {
         Score.Value += Timer.Value;
 
         SumScore.Value = Timer.Value;
+    }
+
+    /// <summary>
+    /// 現在のスコアの1/3のポイントをスコアから減算する
+    /// </summary>
+    public void DisplayMinusScore()
+    {
+        if (Score.Value != 0)
+        {
+            float minusPoint = Score.Value / 3;
+
+            Score.Value -= minusPoint;
+
+            SumScore.Value = minusPoint - Score.Value;
+        }
     }
 
     /// <summary>
