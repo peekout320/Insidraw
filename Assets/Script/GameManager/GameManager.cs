@@ -1,9 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
+/// <summary>
+/// ゲームスタート時の処理、問題の答えの正誤を監視、次の問題への移行の処理
+/// GameManagerにアタッチ
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     
@@ -12,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private UIManager uiManager;
+
+    [SerializeField]
+    private Presenter presenter;
 
     [SerializeField]
     private View view;
@@ -38,22 +44,24 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 演出のため数秒、間を持たせてからゲームを始動する。
+    /// 
     /// </summary>
     /// <returns></returns>
     private IEnumerator StartGame()
     {
+        //[GameStart]を画面に表示する
         uiManager.ShowUpText(txtGameStart,6);
 
+        //演出のため数秒、間を持たせてからゲームを開始する。
         yield return new WaitForSeconds(3);
 
-        //問題となるUnknownオブジェクトの生成
+        //問題となる透明なオブジェクトの生成
         generator.GenerateUnknownObject(this);
 
         //ボール生成
         generator.GenerateBall();
 
-        //タイマー始動
+        //タイマー(制限時間)始動
         StartCoroutine(uiManager.TimerStart(this));
 
         //キー入力をスライダーに反映
@@ -61,6 +69,9 @@ public class GameManager : MonoBehaviour
 
         //問題番号を表示
         uiManager.DisplayQuestionNo();
+
+        //ゲームスタート時から必要なModelを登録
+        presenter.SetupPresenter();
     }
 
     /// <summary>
@@ -78,9 +89,6 @@ public class GameManager : MonoBehaviour
             //次の問題番号を取得
             questionNo++;
 
-            //タイマーストップ
-            uiManager.TimerReset(5);
-
             //スコアを加算
             uiManager.DisplayPlusScore();
 
@@ -92,9 +100,11 @@ public class GameManager : MonoBehaviour
 
             Debug.Log("test");
 
-            //数秒おいて次のオブジェクトに切り替える
+            //数秒おいてタイマーをリセットし次のオブジェクトに切り替える
             DOVirtual.DelayedCall(5, () =>
             {
+                uiManager.TimerReset();
+
                 NextQuestionPreparate();
              });
         }
@@ -130,7 +140,7 @@ public class GameManager : MonoBehaviour
         //ボールを再設定
         generator.ReSetupGenerateBalls();
 
-        DOVirtual.DelayedCall(0.5f, () =>
+        DOVirtual.DelayedCall(TIME_DATA.NEXT_QUESTION_PREPARATE_TIME, () =>
         {
 
             //次のUnkownObjectを設置

@@ -32,7 +32,6 @@ public class SplineController : MonoBehaviour
     [SerializeField]
     private CinemachineBrain Cam;
 
-
     /// <summary>
     /// 正解時に○をスプラインで描画する
     /// </summary>

@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// ボール、ボールの軌跡となるパーティカル、問題となるオブジェクトの生成に関する設定
 /// GameManagerにアタッチ
 /// </summary>
 public class Generator : MonoBehaviour

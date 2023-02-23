@@ -18,19 +18,12 @@ public class Presenter : MonoBehaviour
     private BallController ballcon;
 
 
-    void Start()
-    {
-        StartCoroutine(SetupPresenter());
-    }
-
     /// <summary>
     /// GameManagerのStart関数より少し間を持たせてからセットアップ開始
     /// </summary>
     /// <returns></returns>
-    private IEnumerator SetupPresenter()
+    public void SetupPresenter()
     {
-        yield return new WaitForSeconds(3.5f);
-
         ReflectSliderValue();
         ReflectTimer();
         ReflectScore();
@@ -48,10 +41,13 @@ public class Presenter : MonoBehaviour
         for (int i = 0; i < uiManager.Sliders.Length; i++)
         {
             int a = i;
+
             uiManager.Sliders[0].OnValueChangedAsObservable()
               .Subscribe(sliderValue => ballcon.ballList[a].SpeedY = sliderValue).AddTo(this);
+
             uiManager.Sliders[1].OnValueChangedAsObservable()
                   .Subscribe(sliderValue => ballcon.ballList[a].SpeedX = sliderValue).AddTo(this);
+
             uiManager.Sliders[2].OnValueChangedAsObservable()
                   .Subscribe(sliderValue => ballcon.ballList[a].SpeedZ = sliderValue).AddTo(this);
         }
@@ -105,6 +101,9 @@ public class Presenter : MonoBehaviour
         uiManager.questionNoIndex.Subscribe(x => StartCoroutine(uiManager.GameOver(x))).AddTo(this);
     }
 
+    /// <summary>
+    /// チュートリアルでのテロップをViewクラスへ反映させる
+    /// </summary>
     public void ReflectTutrialTelop()
     {
         uiManager.StrTutrial.Subscribe(x => view.ViewTutrialTelop(x)).AddTo(this);

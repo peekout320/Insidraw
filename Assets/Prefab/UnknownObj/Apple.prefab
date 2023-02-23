@@ -30,6 +30,7 @@ Transform:
   m_Children:
   - {fileID: 8594156320980506939}
   - {fileID: 6800792080735374690}
+  - {fileID: 2471970217462421540}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -290,7 +291,60 @@ MonoBehaviour:
   material1: {fileID: 2100000, guid: 2979092f7fac0499198ef57a7bf142f8, type: 2}
   material2: {fileID: 2100000, guid: 3441d178bb55d4a47a6eeabc2453f3e2, type: 2}
   material3: {fileID: 2100000, guid: 5859860cda63a413380f97a9896366f4, type: 2}
-  fadeSpeed: 300
+  fadeSpeed: 100
+--- !u!1 &6400831122713481671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2471970217462421540}
+  - component: {fileID: 6506562895404806324}
+  m_Layer: 0
+  m_Name: SupportCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2471970217462421540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6400831122713481671}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.968, z: 0}
+  m_LocalScale: {x: 0.09999998, y: 0.1, z: 0.09999998}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 517382016581305712}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6506562895404806324
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6400831122713481671}
+  m_Material: {fileID: 13400000, guid: b6d3913721b1d4509820f136242dde5a, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.028015, y: 1.8554077, z: 12.090797}
+  m_Center: {x: -0.022527695, y: -0.42770386, z: -0.0970304}
 --- !u!1 &7106631218397196803
 GameObject:
   m_ObjectHideFlags: 0

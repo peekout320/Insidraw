@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 
 /// <summary>
+/// ボールに加える力の数値を設定
 /// prefab　⇨　Ballにアタッチ
 /// </summary>
 public class Ball : MonoBehaviour
@@ -17,31 +18,15 @@ public class Ball : MonoBehaviour
     private float speedZ;
     public float SpeedZ { get => speedZ; set => speedZ = value; }
 
-    //public ReactiveProperty<float> BallSpeedX = new ReactiveProperty<float>();
-    //public ReactiveProperty<float> BallSpeedY = new ReactiveProperty<float>();
-    //public ReactiveProperty<float> BallSpeedZ = new ReactiveProperty<float>();
-
-    //public List<float> BallSpeeds = new List<float>();
+    private float ballPower = 1f;
 
     void Start()
     {
-        speedX = Random.Range(-3f, 3f);
-        speedY = Random.Range(-3f, 3f);
-        speedZ = Random.Range(-3f, 3f);
+        speedX = Random.Range(-ballPower, ballPower);
+        speedY = Random.Range(-ballPower, ballPower);
+        speedZ = Random.Range(-ballPower, ballPower);
 
         //Debug.Log("speedX" + speedX);
-
-        //BallSpeeds.Add(speedX);
-        //BallSpeeds.Add(speedY);
-        //BallSpeeds.Add(speedZ);
-
-        //BallSpeedX.Value = Random.Range(-0.5f, 0.5f);
-        //BallSpeedY.Value = Random.Range(-0.5f, 0.5f);
-        //BallSpeedZ.Value = Random.Range(-0.5f, 0.5f);
-
-        //BallSpeeds.Add(BallSpeedX.Value);
-        //BallSpeeds.Add(BallSpeedY.Value);
-        //BallSpeeds.Add(BallSpeedZ.Value);
     }
 }
 

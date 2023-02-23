@@ -1,12 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UniRx;
 using DG.Tweening;
+using UniRx;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
+/// ボールのパワーに関するスライダーの設定、フェードイン/アウトの設定、その他のUI(時間、スコア、テロップ)の設定
 /// UIManagerにアタッチ
 /// </summary>
 public class UIManager : MonoBehaviour
@@ -16,9 +16,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Slider[] sliders;
     public Slider[] Sliders { get => sliders; }
-
-    [SerializeField]
-    private float addPower = 0.5f;
 
     [SerializeField]
     private BallController ballCon;
@@ -31,6 +28,12 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Text txtGameOver;
+
+    [SerializeField]
+    private Text score;
+
+    [SerializeField]
+    private GameObject compass;
 
     //タイマー用のメンバ変数
     [SerializeField]
@@ -45,8 +48,6 @@ public class UIManager : MonoBehaviour
     FadeImage fadeImg;
     [SerializeField]
     private Texture fadeOutTexture;
-
-    private float telopSpeed = 8;
 
     [SerializeField]
     private CanvasGroup imgBallControlPanel;
@@ -78,6 +79,9 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
+        //スライダーの変動値
+        float addPower = 0.005f;
+
         while (true)
         {
             if (!Input.anyKey)
@@ -108,14 +112,14 @@ public class UIManager : MonoBehaviour
             {
                 ballCon.IsMoving = true;
 
-                sliders[0].value -= addPower;
+                sliders[0].value += addPower;
             }
 
             if (Input.GetKey(KeyCode.T))
             {
                 ballCon.IsMoving = true;
 
-                sliders[0].value += addPower;
+                sliders[0].value -= addPower;
             }
 
             //Y軸に対する値を変化させる
@@ -171,17 +175,17 @@ public class UIManager : MonoBehaviour
             if (Timer.Value <= 0)
             {
                 //TimeUPを表示
-                ShowUpText(txtTimeUp, 5.5f);
+                ShowUpText(txtTimeUp, TIME_DATA.TIME_UP_DISPLAY_TIME);
 
                 //答えを表示
-                DisplayAnswer(6);
+                DisplayAnswer(TIME_DATA.ANSWER_DISPLAY_TIME);
 
                 gameManager.QuestionNO++;
-              
-                TimerReset(6);
 
-                DOVirtual.DelayedCall(6, () =>
+                DOVirtual.DelayedCall(TIME_DATA.ANSWER_DISPLAY_TIME, () =>
                 {
+                    TimerReset();
+
                     gameManager.NextQuestionPreparate();
                 });
 
@@ -206,16 +210,13 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// タイマーの再開
     /// </summary>
-    public void TimerReset(int waitSeconds)
-    {
-        DOVirtual.DelayedCall(waitSeconds, () =>
-         {
-             //タイマーを初期値に戻す
-             Timer.Value = startTime;
+    public void TimerReset()
+    {         
+        //タイマーを初期値に戻す
+        Timer.Value = startTime;
 
-             //問題番号と数値を一致させる
-             stopTimerIndex++;
-         });
+        //問題番号と数値を一致させる
+        stopTimerIndex++;
     }
 
     /// <summary>
@@ -226,6 +227,14 @@ public class UIManager : MonoBehaviour
         Score.Value += Timer.Value;
 
         SumScore.Value = Timer.Value;
+    }
+
+    /// <summary>
+    /// ゲーム終了時にスコアの表示を中央付近へ移動する
+    /// </summary>
+    public void GameOverScore()
+    {
+        score.transform.DOLocalMove(new Vector3(250, -120, 0), 1);
     }
 
     /// <summary>
@@ -309,9 +318,13 @@ public class UIManager : MonoBehaviour
     {
         if (questionNo == 5)
         {
-            ShowUpText(txtGameOver,7);
+            ShowUpText(txtGameOver,TIME_DATA.GAME_OVER_DISPLAY);
 
-            yield return new WaitForSeconds(8);
+            yield return new WaitForSeconds(TIME_DATA.SCORE_DISPLAY_TIME);
+
+            GameOverScore();
+
+            yield return new WaitForSeconds(TIME_DATA.TITLESCENE_TRANSITION_TIME);
 
             SceneManager.LoadScene("TitleScene");
         }
@@ -335,7 +348,7 @@ public class UIManager : MonoBehaviour
     {
         fadeImg.UpdateMaskTexture(texture);
 
-        fade.FadeOut(3);   
+        fade.FadeOut(TIME_DATA.FADE_TIME);   
     }
     private void Start()
     {
@@ -352,43 +365,45 @@ public class UIManager : MonoBehaviour
 
         StrTutrial.Value = "ゲーム内には３つのボールが存在します。";
 
-        yield return new WaitForSeconds(telopSpeed);
+        yield return new WaitForSeconds(TIME_DATA.TELOP_SPEED);
 
         StrTutrial.Value = "ボールは移動すると軌跡が残り、物体に色を塗ることができます。";
 
-        yield return new WaitForSeconds(telopSpeed);
+        yield return new WaitForSeconds(TIME_DATA.TELOP_SPEED);
 
         imgBallControlPanel.DOFade(1, 2);
 
+        compass.SetActive(true);
+
         StrTutrial.Value = "ボールの操作 縦(R,Tキー)　横(F,Gキー)　奥(V,Bキー)";
 
-        yield return new WaitForSeconds(telopSpeed);
+        yield return new WaitForSeconds(TIME_DATA.TELOP_SPEED);
 
         imgCameraControl.DOFade(1, 2);
 
         StrTutrial.Value = "←→↑↓キーでカメラを操作できます。";
 
-        yield return new WaitForSeconds(telopSpeed);
+        yield return new WaitForSeconds(TIME_DATA.TELOP_SPEED);
 
         InputForm.DOFade(1, 2);
 
         StrTutrial.Value = "オブジェクトが何か分かったら入力フォームにひらがなで答えを入力してください。";
 
-        yield return new WaitForSeconds(telopSpeed);
+        yield return new WaitForSeconds(TIME_DATA.TELOP_SPEED);
 
         StrTutrial.Value = "正解すると残りのTimeがScoreに加算されます。";
 
-        yield return new WaitForSeconds(telopSpeed);
+        yield return new WaitForSeconds(TIME_DATA.TELOP_SPEED);
 
         StrTutrial.Value = "正解するか、制限時間が０になると次の問題に移ります。";
 
-        yield return new WaitForSeconds(telopSpeed);
+        yield return new WaitForSeconds(TIME_DATA.TELOP_SPEED);
 
         StrTutrial.Value = null;
 
         FadeInScreen(fadeOutTexture);
 
-        yield return new WaitForSeconds(telopSpeed);
+        yield return new WaitForSeconds(TIME_DATA.TELOP_SPEED);
 
         SceneManager.LoadScene("MainScene");
 

@@ -5,7 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 
 /// <summary>
-/// カメラを回転すると、ボールパワーの”横”と”奥”がわかり辛くなるので方向が分かりやすくなるように設置したCompassにアタッチする
+/// カメラを回転するとローカル視点でのZ軸とX軸が混同するので、方向が分かりやすくなるように設置したCompassにアタッチする
 /// </summary>
 public class CompassController : MonoBehaviour
 {
@@ -15,21 +15,23 @@ public class CompassController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //コンパス自体はMainCameraの子にして追随するようにし、compass自体は初期値から回転しないように設定する
+        //コンパス自体はMainCameraの子にして追随するようにするが、回転はしないように設定する
         var compassTran = this.transform.rotation;
 
-        Observable.EveryUpdate()
-            //.Where(_ => Input.anyKey)
+        this.UpdateAsObservable()
             .Subscribe(_ =>
             {
                 this.transform.rotation = compassTran;
             });
 
-        //this.UpdateAsObservable()
+        //その他の記述の仕方
+        //Observable.EveryUpdate()
         //    .Where(_ => Input.anyKey)
         //    .Subscribe(_ =>
         //    {
-        //        this.transform.rotation = Quaternion.Euler(new Vector3(2.7f, 58.7f, 0));
-        //    });
+        //        this.transform.rotation = compassTran;
+        //    })
+        //    .AddTo(this);
+
     }
 }

@@ -7,9 +7,9 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// TitleScene用のクラス、GameManagerにアタッチ
+/// TitleScene用のクラス。TitleSceneManagerにアタッチ
 /// </summary>
-public class TitleScene : MonoBehaviour
+public class TitleSceneManager : MonoBehaviour
 {
     [SerializeField]
     private UIManager uiManager;
@@ -75,7 +75,7 @@ public class TitleScene : MonoBehaviour
     /// <summary>
     /// ゲームスタート時にTitleScene用のオブジェクトを生成し、ボールとタイトルをフェードインする演出にする。
     /// BGMに合わせてボールが動き出す仕組みにしているが、WebGLは最初にゲーム画面をクリックしないと音が流れないので、
-    /// WebGL用にクリックでボールが動き出すように設定している。
+    /// WebGL用にクリックでボールが動き出すように設定。
     /// </summary>
     /// <returns></returns>
     private IEnumerator StartGame()
@@ -101,19 +101,19 @@ public class TitleScene : MonoBehaviour
                 //BGMの再生
                 bgmAudio.Play();
 
-                //パーティクルを順番にアクティブにする
+                //ボールが光るように順番にアクティブにする
                 particles[0].gameObject.SetActive(true);
 
-                yield return new WaitForSeconds(0.85f);
+                 yield return new WaitForSeconds(TIME_DATA.BALL_LIGHT_UP_TIME1);
 
                 particles[1].gameObject.SetActive(true);
 
-                yield return new WaitForSeconds(1.1f);
+                 yield return new WaitForSeconds(TIME_DATA.BALL_LIGHT_UP_TIME2);
 
                 particles[2].gameObject.SetActive(true);
 
                 //ボールを動かす
-                MovingBall_Title();
+                ballCon.MovingBall(ballCon.ballList);
 
                 //CinemachineCameraで演出
                 vCam.enabled = true;
@@ -141,11 +141,11 @@ public class TitleScene : MonoBehaviour
     {
         AudioSource.PlayClipAtPoint(startButtonSE, Camera.main.transform.position,1);
 
-        yield return new WaitForSeconds(2);
+         yield return new WaitForSeconds(TIME_DATA.CHANGESCENE_TRANSITION_TIME1);
 
         uiManager.FadeInScreen(fadeInTexture);
 
-        yield return new WaitForSeconds(4);
+         yield return new WaitForSeconds(TIME_DATA.CHANGESCENE_TRANSITION_TIME2);
 
         SceneManager.LoadScene("MainScene");
     }
@@ -157,11 +157,11 @@ public class TitleScene : MonoBehaviour
     {
         AudioSource.PlayClipAtPoint(startButtonSE, Camera.main.transform.position, 1);
 
-        yield return new WaitForSeconds(2);
+         yield return new WaitForSeconds(TIME_DATA.CHANGESCENE_TRANSITION_TIME1);
 
         uiManager.FadeInScreen(fadeInTexture);
 
-        yield return new WaitForSeconds(4);
+         yield return new WaitForSeconds(TIME_DATA.CHANGESCENE_TRANSITION_TIME2);
 
         SceneManager.LoadScene("TutrialScene");
     }
@@ -170,7 +170,7 @@ public class TitleScene : MonoBehaviour
     /// タイトル画面におけるボールの動作
     /// </summary>
     public void MovingBall_Title()
-    {       
+    {
         for (int i = 0; i < ballCon.ballList.Count; i++)
         {
             ballCon.ballList[i].SpeedX = Random.Range(-5f, 5f);

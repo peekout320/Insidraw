@@ -5,6 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 
 /// <summary>
+/// ボールの移動に関す処理、接触時の処理
 /// BallControllerにアタッチ
 /// </summary>
 public class BallController : MonoBehaviour
@@ -20,12 +21,7 @@ public class BallController : MonoBehaviour
     public List<Ball> ballList = new List<Ball>();
 
     [SerializeField]
-    private float limitSpeed = 5f;
-
-    [SerializeField]
     private AudioClip colAudio;
-    [SerializeField]
-    private float audioVolum = 0.5f;
 
     [SerializeField]
     private bool isMoving;
@@ -53,6 +49,10 @@ public class BallController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!isMoving) return;
+
+        //ボールの速度制限値
+        float limitSpeed = 5f;
+
         for (int i = 0; i < ballList.Count; i++)
         {
             //velocityに制限をつけてrigidbodyで動かす
@@ -80,6 +80,9 @@ public class BallController : MonoBehaviour
             ballList[i].OnCollisionEnterAsObservable()
                 .Subscribe(col =>
                 {
+                    //ボール接触時の効果音量
+                    float audioVolum = 0.5f;
+
                     AudioSource.PlayClipAtPoint(colAudio, Camera.main.transform.position,audioVolum);
                 })
                 .AddTo(this);

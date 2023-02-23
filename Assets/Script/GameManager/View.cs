@@ -65,7 +65,7 @@ public class View : MonoBehaviour
         //加減されるポイントを表示して、5秒後に消す
         txtSumScore.gameObject.SetActive(true);
 
-        DOVirtual.DelayedCall(5, () =>
+        DOVirtual.DelayedCall(TIME_DATA.SUM_SCORE_DISPLAY_TIME, () =>
          {
              txtSumScore.gameObject.SetActive(false);
          });
